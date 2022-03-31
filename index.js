@@ -11,10 +11,6 @@ let scores = scoreData.scores;
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Home Page");
-});
-
 app.post("/register", (req, res) => {
     let customer = customers.find((c) => c.email === req.body.email);
     if (!customer) {
@@ -102,4 +98,3 @@ app.get("/scores/:quiztaker/:quizname", (req, res) => {
 });
 
 app.listen(3000, () => console.log("Listening on port 3000"));
-
