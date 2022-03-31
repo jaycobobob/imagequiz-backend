@@ -1,14 +1,12 @@
 const express = require("express");
-const customerData = require("./data/customers");
-const flowerData = require("./data/flowers");
-const quizData = require("./data/data");
-const scoreData = require("./data/scores");
-let customers = customerData.customers;
-let flowers = flowerData.flowers;
-let quizzes = quizData.quizzes;
-let scores = scoreData.scores;
+const { customers } = require("./data/customers");
+const { flowers } = require("./data/flowers");
+const { quizzes } = require("./data/data");
+const { scores } = require("./data/scores");
 
 const app = express();
+const port = process.env.PORT || 3000;
+
 app.use(express.json());
 
 app.post("/register", (req, res) => {
@@ -20,25 +18,25 @@ app.post("/register", (req, res) => {
             password: req.body.password,
         };
         customers.push(customer);
-        res.send({ done: true, message: "Account registered successfully." });
+        res.json({ done: true, message: "Account registered successfully." });
     } else {
-        res.status(403).send({ done: false, message: "Email already exists." });
+        res.status(403).json({ done: false, message: "Email already exists." });
     }
 });
 
 app.post("/login", (req, res) => {
     let customer = customers.find((c) => c.email === req.body.email);
     if (!customer) {
-        res.send({ done: false, message: "Email does not exist." });
+        res.json({ done: false, message: "Email does not exist." });
     } else if (customer && customer.password !== req.body.password) {
-        res.send({ done: false, message: "Password incorrect." });
+        res.json({ done: false, message: "Password incorrect." });
     } else {
-        res.send({ done: true, message: "Credentials valid." });
+        res.json({ done: true, message: "Credentials valid." });
     }
 });
 
 app.get("/flowers", (req, res) => {
-    res.send({
+    res.json({
         done: true,
         result: flowers,
         message: "Flower data retrieved successfully",
@@ -49,13 +47,13 @@ app.get("/quiz/:id", (req, res) => {
     console.log(req.params.id);
     let quiz = quizzes.find((q) => q.id === parseInt(req.params.id));
     if (quiz) {
-        res.send({
+        res.json({
             done: true,
             result: quiz,
             message: "Quiz retrieved successfully.",
         });
     } else {
-        res.send({
+        res.json({
             done: false,
             result: undefined,
             message: `No quiz with id ${req.params.id} found.`,
@@ -70,7 +68,7 @@ app.post("/score", (req, res) => {
         score: req.body.score,
     };
     scores.push(score);
-    res.send({ done: true, message: "Score posted successfully" });
+    res.json({ done: true, message: "Score posted successfully" });
 });
 
 app.get("/scores/:quiztaker/:quizname", (req, res) => {
@@ -84,17 +82,17 @@ app.get("/scores/:quiztaker/:quizname", (req, res) => {
         }
     }
     if (userScores.length > 0) {
-        res.send({
+        res.json({
             done: true,
             result: userScores,
             message: "Found scores sucessfully.",
         });
     }
-    res.status(404).send({
+    res.status(404).json({
         done: false,
         result: [],
         message: "No score found.",
     });
 });
 
-app.listen(3000, () => console.log("Listening on port 3000"));
+app.listen(port, () => console.log(`Listening on port ${port}.`));
