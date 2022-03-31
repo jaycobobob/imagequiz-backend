@@ -9,6 +9,10 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.status(200).json({ done: true, message: "Fine!" });
+});
+
 app.post("/register", (req, res) => {
     let customer = customers.find((c) => c.email === req.body.email);
     if (!customer) {
@@ -18,7 +22,10 @@ app.post("/register", (req, res) => {
             password: req.body.password,
         };
         customers.push(customer);
-        res.json({ done: true, message: "Account registered successfully." });
+        res.status(200).json({
+            done: true,
+            message: "Account registered successfully.",
+        });
     } else {
         res.status(403).json({ done: false, message: "Email already exists." });
     }
@@ -27,16 +34,16 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     let customer = customers.find((c) => c.email === req.body.email);
     if (!customer) {
-        res.json({ done: false, message: "Email does not exist." });
+        res.status(200).json({ done: false, message: "Email does not exist." });
     } else if (customer && customer.password !== req.body.password) {
-        res.json({ done: false, message: "Password incorrect." });
+        res.status(200).json({ done: false, message: "Password incorrect." });
     } else {
-        res.json({ done: true, message: "Credentials valid." });
+        res.status(200).json({ done: true, message: "Credentials valid." });
     }
 });
 
 app.get("/flowers", (req, res) => {
-    res.json({
+    res.status(200).json({
         done: true,
         result: flowers,
         message: "Flower data retrieved successfully",
@@ -47,13 +54,13 @@ app.get("/quiz/:id", (req, res) => {
     console.log(req.params.id);
     let quiz = quizzes.find((q) => q.id === parseInt(req.params.id));
     if (quiz) {
-        res.json({
+        res.status(200).json({
             done: true,
             result: quiz,
             message: "Quiz retrieved successfully.",
         });
     } else {
-        res.json({
+        res.status(200).json({
             done: false,
             result: undefined,
             message: `No quiz with id ${req.params.id} found.`,
@@ -68,7 +75,7 @@ app.post("/score", (req, res) => {
         score: req.body.score,
     };
     scores.push(score);
-    res.json({ done: true, message: "Score posted successfully" });
+    res.status(200).json({ done: true, message: "Score posted successfully" });
 });
 
 app.get("/scores/:quiztaker/:quizname", (req, res) => {
@@ -82,7 +89,7 @@ app.get("/scores/:quiztaker/:quizname", (req, res) => {
         }
     }
     if (userScores.length > 0) {
-        res.json({
+        res.status(200).json({
             done: true,
             result: userScores,
             message: "Found scores sucessfully.",
