@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { customers } = require("./data/customers");
 const { flowers } = require("./data/flowers");
 const { quizzes } = require("./data/data");
@@ -8,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.status(200).json({ done: true, message: "Fine!" });
