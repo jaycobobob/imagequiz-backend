@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const { customers } = require("./data/customers");
-const { flowers } = require("./data/flowers");
-const { quizzes } = require("./data/data");
-const { scores } = require("./data/scores");
+const { customers } = require("./data-access/data/customers");
+const { flowers } = require("./data-access/data/flowers");
+const { quizzes } = require("./data-access/data/data");
+const { scores } = require("./data-access/data/scores");
 
 const app = express();
 const port = process.env.PORT || 3000;
