@@ -170,7 +170,7 @@ application.get("/", (req, res) => {
 // Determines which port to listen to.
 const PORT = process.env.PORT || 3000;
 
-// Starts the express server and sets a callback function for when startup finishes
+// Starts the express server and runs a callback function when startup finishes
 application.listen(PORT, () => {
     console.log(`Listening to port ${PORT}`);
 });
